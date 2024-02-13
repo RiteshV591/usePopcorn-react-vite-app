@@ -8,8 +8,6 @@ import { MovieList } from "./Components/Main/ListBox/MovieList";
 import { Box } from "./Components/Main/Box";
 import { WatchedSummary } from "./Components/Main/WatchedBox/WatchedSummary";
 import { WatchedMoviesList } from "./Components/Main/WatchedBox/WatchedMoviesList";
-import { ErrorMessage } from "./Components/ErrorMessage";
-import { Loader } from "./Components/Loader";
 
 const KEY = "2666e1f5";
 
@@ -61,9 +59,15 @@ export default function App() {
       </Navbar>
       <Main>
         <Box>
-          {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} />}
-          {error && <ErrorMessage message={error} />}
+          {isLoading ? (
+            <p className="loader">Loading...</p>
+          ) : error ? (
+            <p className="error">
+              <span>&times;</span> {error}
+            </p>
+          ) : (
+            <MovieList movies={movies} />
+          )}
         </Box>
 
         <Box>

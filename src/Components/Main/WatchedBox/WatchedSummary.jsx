@@ -1,5 +1,9 @@
-const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+const average = (numbersArray) =>
+  numbersArray.reduce(
+    (accumulator, currentValue, array) =>
+      accumulator + currentValue / array.length,
+    0
+  );
 
 export const WatchedSummary = ({ watched }) => {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
