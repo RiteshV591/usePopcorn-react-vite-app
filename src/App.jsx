@@ -11,9 +11,6 @@ import { WatchedMoviesList } from "./Components/Main/WatchedBox/WatchedMoviesLis
 import { ErrorMessage } from "./Components/ErrorMessage";
 import { Loader } from "./Components/Loader";
 
-const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-
 const KEY = "2666e1f5";
 
 export default function App() {
@@ -23,30 +20,30 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        setError("");
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-        );
+  const fetchMovies = async () => {
+    try {
+      setIsLoading(true);
+      setError("");
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+      );
 
-        if (!res.ok) throw new Error("Something went wrong");
+      if (!res.ok) throw new Error("Something went wrong");
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (data.Response === "False") throw new Error("Movie Not Found!");
+      if (data.Response === "False") throw new Error("Movie Not Found!");
 
-        setMovies(data.Search);
-      } catch (err) {
-        console.log(err);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
+      setMovies(data.Search);
+    } catch (err) {
+      console.log(err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
+  useEffect(() => {
     if (query.length < 3) {
       setMovies([]);
       setError("");
@@ -70,7 +67,7 @@ export default function App() {
         </Box>
 
         <Box>
-          <WatchedSummary watched={watched} average={average} />
+          <WatchedSummary watched={watched} />
           <WatchedMoviesList watched={watched} />
         </Box>
       </Main>
