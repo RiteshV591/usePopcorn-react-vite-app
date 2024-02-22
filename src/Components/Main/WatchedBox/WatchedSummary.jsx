@@ -1,6 +1,6 @@
 const average = (numbersArray) =>
   numbersArray.reduce(
-    (accumulator, currentValue, array) =>
+    (accumulator, currentValue, currentIndex, array) =>
       accumulator + currentValue / array.length,
     0
   );
@@ -20,11 +20,11 @@ export const WatchedSummary = ({ watched }) => {
         </p>
         <p>
           <span>⭐️</span>
-          <span>{avgImdbRating}</span>
+          <span>{avgImdbRating.toFixed(1)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{avgUserRating}</span>
+          <span>{avgUserRating.toFixed(1)}</span>
         </p>
         <p>
           <span>⏳</span>

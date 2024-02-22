@@ -8,6 +8,7 @@ import { MovieList } from "./Components/Main/ListBox/MovieList";
 import { Box } from "./Components/Main/Box";
 import { WatchedSummary } from "./Components/Main/WatchedBox/WatchedSummary";
 import { WatchedMoviesList } from "./Components/Main/WatchedBox/WatchedMoviesList";
+import { SelectedMovies } from "./Components/SelectedMovies";
 
 const KEY = "2666e1f5";
 
@@ -17,6 +18,23 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleSelectMovie = (id) => {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  };
+
+  const handleCloseMovie = () => {
+    setSelectedId(null);
+  };
+
+  const handleAddWatched = (movie) => {
+    setWatched((watched) => [...watched, movie]);
+  };
+
+  const handleDeleteWatched = (id) => {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  };
 
   const fetchMovies = async () => {
     try {
@@ -66,13 +84,27 @@ export default function App() {
               <span>&times;</span> {error}
             </p>
           ) : (
-            <MovieList movies={movies} />
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
           )}
         </Box>
 
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMoviesList watched={watched} />
+          {selectedId ? (
+            <SelectedMovies
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatched}
+              watched={watched}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMoviesList
+                watched={watched}
+                onDeleteWatched={handleDeleteWatched}
+              />
+            </>
+          )}
         </Box>
       </Main>
     </>
