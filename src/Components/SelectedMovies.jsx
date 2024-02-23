@@ -61,6 +61,29 @@ export const SelectedMovies = ({
     getMovieDetails();
   }, [selectedId]);
 
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title}`;
+
+    return () => {
+      document.title = "usePopcorn";
+    };
+  }, [title]);
+
+  const escMovie = (e) => {
+    if (e.code === "Escape") {
+      onCloseMovie();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", escMovie);
+
+    return () => {
+      document.removeEventListener("keydown", escMovie);
+    };
+  }, [onCloseMovie]);
+
   return (
     <div className="details">
       {isLoading ? (
